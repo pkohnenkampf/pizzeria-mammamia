@@ -1,0 +1,26 @@
+.container-fluid {
+	--bs-gutter-x:0;
+}
+
+.bg-header {
+	background: url('../../assets/images/Header.jpg') rgba(0, 0, 0, 0.5);
+	background-size: 100%;
+	background-position: right center;
+    background-blend-mode: multiply;
+	height: 250px;
+    padding: 2rem 4rem;
+}
+
+.content-header {
+	margin-top: 20px;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	color: #fff;
+}
+
+.content-header--description {
+	font-size: 14px;
+    border-bottom: 3px solid #fff;
+    padding: 0 0 24px;
+}
