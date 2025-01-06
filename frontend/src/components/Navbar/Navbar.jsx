@@ -1,5 +1,5 @@
 import { Navbar as NavbarBootstrap, Nav, Button } from 'react-bootstrap';
-
+import { Link } from 'react-router-dom'
 
 const Navbar = () => {
     const total = 25000;
@@ -12,23 +12,33 @@ const Navbar = () => {
             <NavbarBootstrap.Toggle aria-controls="basic-navbar-nav" />
             <NavbarBootstrap.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-                <Button variant="outline-light" href="#" className="me-2">🍕 Home</Button>
+                <Link to="/" >
+                    <Button variant="outline-light" className="me-2">🍕 Home</Button>
+                </Link>
                 {token ? (
                 <>
-                    <Button variant="outline-light" href="#" className="me-2">🔓 Profile</Button>
-                    <Button variant="outline-light" href="#" className="me-2">🔒 Logout</Button>
+                <Link to='/profile'>
+                    <Button variant="outline-light" className="me-2">🔓 Profile</Button>
+                </Link>
+                    <Button variant="outline-light" className="me-2">🔒 Logout</Button>
                 </>
                 ) : (
                 <>
-                    <Button variant="outline-light" href="#" className="me-2">🔐 Login</Button>
-                    <Button variant="outline-light" href="#" className="me-2">🔐 Register</Button>
+                <Link to='/login'>
+                    <Button variant="outline-light" className="me-2">🔐 Login</Button>
+                </Link>
+                <Link to='/register'>
+                    <Button variant="outline-light" className="me-2">🔐 Register</Button>
+                </Link>
                 </>
                 )}
             </Nav>
             <Nav className="ms-lg-auto">
-                <Button className="w-lg-auto mt-2 mt-lg-0" variant="outline-info" href="#link">
-                🛒 Total: ${formatTotal(total)}
-                </Button>
+                <Link to='/cart'>
+                    <Button className="w-lg-auto mt-2 mt-lg-0" variant="outline-info" href="#link">
+                    🛒 Total: ${formatTotal(total)}
+                    </Button>
+                </Link>
             </Nav>
             </NavbarBootstrap.Collapse>
         </NavbarBootstrap>
