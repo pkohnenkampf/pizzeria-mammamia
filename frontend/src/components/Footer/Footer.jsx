@@ -1,3 +1,5 @@
+import './footer.css';
+
 const Footer = () => {
     return (
         <footer className='footer bg-dark p-2 '>
