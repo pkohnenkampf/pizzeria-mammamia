@@ -1,37 +1,38 @@
-import CardPizza from "./components/CardPizza/CardPizza";
+import { useState, useEffect } from "react";
 import { Row, Col } from 'react-bootstrap';
 import Header from "./components/Header/Header";
+import CardPizza from "./components/CardPizza/CardPizza";
 
 const Home = () => {
+  const [pizzas,setPizzas] = useState([])
+  const urlPizzas = 'http://localhost:5000/api/pizzas';
+
+  const getDatos = async () => {
+    const response = await fetch(urlPizzas)
+    const datos = await response.json()
+    setPizzas(datos)
+  }
+
+  useEffect(() => {
+    getDatos()
+  },[])
+
   return (
     <>
       <Header /> 
       <div className='container'>
         <Row className="justify-content-center py-4 gx-5">
-          <Col xs={12} sm={9} md={6} lg={4}>
-            <CardPizza
-              name="Pizza Napolitana"
-              price={5950}
-              ingredients={["mozzarella", "tomates", "jamón", "orégano"]}
-              img="https://firebasestorage.googleapis.com/v0/b/apis-varias-mias.appspot.com/o/pizzeria%2Fpizza-1239077_640_cl.jpg?alt=media&token=6a9a33da-5c00-49d4-9080-784dcc87ec2c"
-            />
-          </Col>
-          <Col xs={12} sm={9} md={6} lg={4}>
-            <CardPizza
-              name="Pizza Española"
-              price={6950}
-              ingredients={["mozzarella", "gorgonzola", "parmesano", "provolone"]}
-              img="https://firebasestorage.googleapis.com/v0/b/apis-varias-mias.appspot.com/o/pizzeria%2Fcheese-164872_640_com.jpg?alt=media&token=18b2b821-4d0d-43f2-a1c6-8c57bc388fab"
-            />
-          </Col>
-          <Col xs={12} sm={9} md={6} lg={4}>
-            <CardPizza
-              name="Pizza Pepperoni"
-              price={6950}
-              ingredients={["mozzarella", "pepperoni", "orégano"]}
-              img="https://firebasestorage.googleapis.com/v0/b/apis-varias-mias.appspot.com/o/pizzeria%2Fpizza-1239077_640_com.jpg?alt=media&token=e7cde87a-08d5-4040-ac54-90f6c31eb3e3"
-            />
-          </Col>
+          {pizzas.map((pizza) =>
+            <Col xs={12} sm={9} md={6} lg={4} key={pizza.id} className="cardPizza">
+              <CardPizza
+                id={pizza.id}
+                name= {pizza.name}
+                price={pizza.price}
+                ingredients={pizza.ingredients}
+                img={pizza.img}
+              />
+            </Col>
+          )}
         </Row>
       </div>
     </>
