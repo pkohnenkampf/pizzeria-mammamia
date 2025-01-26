@@ -3,8 +3,9 @@ import { Row, Col } from 'react-bootstrap';
 import Header from "../components/Header/Header";
 import CardPizza from "../components/CardPizza/CardPizza";
 
+
 const Home = () => {
-  const [pizzas,setPizzas] = useState([])
+  const [pizzas,setPizzas] = useState([]);
   const urlPizzas = 'http://localhost:5000/api/pizzas';
 
   const getDatos = async () => {

@@ -1,8 +1,10 @@
+import { useContext } from 'react';
 import { Navbar as NavbarBootstrap, Nav, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom'
+import { CartContext } from '../../context/CartContext';
 
 const Navbar = () => {
-    const total = 25000;
+    const { totalPrice } = useContext(CartContext);
     const token = false;
     const formatTotal = (amount) => amount.toLocaleString('es-ES');
 
@@ -36,7 +38,7 @@ const Navbar = () => {
             <Nav className="ms-lg-auto">
                 <Link to='/cart'>
                     <Button className="w-lg-auto mt-2 mt-lg-0" variant="outline-info" href="#link">
-                    🛒 Total: ${formatTotal(total)}
+                    🛒 Total: ${formatTotal(totalPrice)}
                     </Button>
                 </Link>
             </Nav>
