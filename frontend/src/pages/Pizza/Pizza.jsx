@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Image, Button } from "react-bootstrap";
+import { useParams } from "react-router-dom";
 
 const Pizza = () => {
+    const { id } = useParams();
     const [pizza, setPizza] = useState(null);
-    const urlPizza = 'http://localhost:5000/api/pizzas/p001';
-    const {name, id, price, img, desc, ingredients } = pizza;
+    const urlPizza = `http://localhost:5000/api/pizzas/${id}`;
+    const {name, price, img, desc, ingredients } = pizza;
 
     const getPizza = async () => {
         try {

@@ -2,10 +2,11 @@ import { useContext } from 'react';
 import { Navbar as NavbarBootstrap, Nav, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom'
 import { CartContext } from '../../context/CartContext';
+import { UserContext } from '../../context/UserContext';
 
 const Navbar = () => {
     const { totalPrice } = useContext(CartContext);
-    const token = false;
+    const { user, logout } = useContext(UserContext);
     const formatTotal = (amount) => amount.toLocaleString('es-ES');
 
     return (
@@ -17,12 +18,12 @@ const Navbar = () => {
                 <Link to="/" >
                     <Button variant="outline-light" className="me-2">🍕 Home</Button>
                 </Link>
-                {token ? (
+                {user.token ? (
                 <>
                 <Link to='/profile'>
                     <Button variant="outline-light" className="me-2">🔓 Profile</Button>
                 </Link>
-                    <Button variant="outline-light" className="me-2">🔒 Logout</Button>
+                    <Button variant="outline-light" className="me-2" onClick={logout}>🔒 Logout</Button>
                 </>
                 ) : (
                 <>
