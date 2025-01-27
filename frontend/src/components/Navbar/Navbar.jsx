@@ -6,7 +6,7 @@ import { UserContext } from '../../context/UserContext';
 
 const Navbar = () => {
     const { totalPrice } = useContext(CartContext);
-    const { user, logout } = useContext(UserContext);
+    const { token, logout } = useContext(UserContext);
     const formatTotal = (amount) => amount.toLocaleString('es-ES');
 
     return (
@@ -18,7 +18,7 @@ const Navbar = () => {
                 <Link to="/" >
                     <Button variant="outline-light" className="me-2">🍕 Home</Button>
                 </Link>
-                {user.token ? (
+                {token ? (
                 <>
                 <Link to='/profile'>
                     <Button variant="outline-light" className="me-2">🔓 Profile</Button>

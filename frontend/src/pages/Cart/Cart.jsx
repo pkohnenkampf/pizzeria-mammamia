@@ -1,11 +1,52 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Container, Row, Col, Button, Card } from "react-bootstrap";
 import { CartContext } from "../../context/CartContext";
 import { UserContext } from "../../context/UserContext";
 
 const Cart = () => {
     const { cart, addToCart, removeFromCart, totalPrice } = useContext(CartContext);
-    const { user } = useContext(UserContext);
+    const { token } = useContext(UserContext);
+    const [loading, setLoading] = useState(false); 
+
+    const handlePayment = async () => {
+        if (!token) {
+            alert("Debes iniciar sesión para realizar el pago."); 
+            return;
+        }
+        if (cart.length === 0) {
+            alert("😔 No has agregado ninguna pizza al carro"); 
+            return;
+        }
+
+        setLoading(true);
+
+        try {
+            const response = await fetch('http://localhost:5000/api/checkouts', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`, 
+                },
+                body: JSON.stringify({ cart }), 
+            });
+
+            if (!response.ok) {
+                const errorResult = await response.json(); 
+                throw new Error(errorResult.message || 'Error al procesar el pago');
+            }
+
+            const result = await response.json();
+            alert("¡Listo! Ya pediste tus pizzas, te mantendremos al tanto del estado de tu pedido.");
+            cart.forEach(pizza => removeFromCart(pizza.id)); 
+
+            console.log("Compra realizada con éxito:", result);
+        } catch (error) {
+            console.error(error);
+            alert("Hubo un error al procesar tu pago. Inténtalo de nuevo.");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <Container>
@@ -52,8 +93,8 @@ const Cart = () => {
             <Row className="d-flex">
                 <Col className=" p-2">
                     <h3 className="mt-2">Total: ${totalPrice}</h3>
-                    <Button variant="secondary" className="mt-2 mb-3" size="lg" disabled={!user.token}>
-                        Pagar
+                    <Button variant="secondary" className="mt-2 mb-3" size="lg" disabled={loading} onClick={handlePayment}>
+                        {loading ? "Procesando..." : "Pagar"}
                     </Button>
                 </Col>
             </Row>

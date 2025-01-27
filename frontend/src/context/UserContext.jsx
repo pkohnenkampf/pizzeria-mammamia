@@ -3,14 +3,73 @@ import { createContext, useState } from "react";
 export const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
- const [user, setUser] = useState({ username: "", password: "", token: true });
+    const [token, setToken] = useState(localStorage.getItem('token'));
 
- const logout = () => {
-  setUser({ ...user, token: false });
- };
+    const login = async (email, password) => {
+        try {
+        const res = await fetch("http://localhost:5000/api/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password }),
+        });
+        const data = await res.json();
+        if (res.ok) {
+            setToken(data.token);
+            localStorage.setItem('token', data.token);
+        } else {
+            console.error("Error en login:", data.message);
+        }
+        } catch (error) {
+        console.error("Error en login:", error);
+        }
+    };
+
+    const register = async (email, password) => {
+        try {
+        const res = await fetch("http://localhost:5000/api/auth/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password }),
+        });
+        const data = await res.json();
+        if (res.ok) {
+            setToken(data.token); 
+            localStorage.setItem('token', data.token); 
+        } else {
+            console.error("Error en el registro:", data.message);
+        }
+        } catch (error) {
+        console.error("Error en el registro:", error);
+        }
+    };
+
+    const getUser = async () => {
+        try {
+        const res = await fetch("http://localhost:5000/api/auth/me", {
+            method: "GET",
+            headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+            },
+        });
+        if (!res.ok) {
+            throw new Error('Error al obtener el perfil del usuario');
+        }
+        const data = await res.json();
+        return data;
+        } catch (error) {
+        console.error("Error al obtener el perfil:", error);
+        return null;
+        }
+    };
+
+    const logout = () => {
+        setToken(null);
+        localStorage.removeItem('token');
+    };
 
  return (
-  <UserContext.Provider value={{ user, setUser, logout }}>
+  <UserContext.Provider value={{ token, login, register, getUser, logout }}>
    {children}
   </UserContext.Provider>
  );
